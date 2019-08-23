@@ -13,13 +13,14 @@ pipeline {
             }
         }
 
-        // stage('TF - Plan'){
-        //     agent { docker 'hashicorp/terraform' }
-        //     steps {
-        //         sh "terraform init"
-        //         sh "terraform plan"
-        //     }
-        // }
+        stage('TF - Config'){
+            agent { docker 'hashicorp/terraform' }
+            steps {
+                sh "terraform init"
+                sh "terraform plan"
+                // sh "terraform apply -auto-approve"
+            }
+        }
 
         // stage('TF - Apply'){
         //     agent { docker 'hashicorp/terraform' }
