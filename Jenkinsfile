@@ -21,6 +21,7 @@ pipeline {
                 }
             }
             steps {
+                echo "Hola Mundo"
                 // sh "terraform init"
                 // sh "terraform plan"
                 // sh "terraform apply -auto-approve"
