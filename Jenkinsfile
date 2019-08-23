@@ -14,10 +14,13 @@ pipeline {
         }
 
         stage('TF - Config'){
-            agent { docker 'hashicorp/terraform' }
+            agent { 
+                docker 'hashicorp/terraform'
+                args '-v terraform/:/terraform --entrypoint=validate /terraform/main.tf'
+            }
             steps {
-                sh "terraform init"
-                sh "terraform plan"
+                // sh "terraform init"
+                // sh "terraform plan"
                 // sh "terraform apply -auto-approve"
             }
         }
