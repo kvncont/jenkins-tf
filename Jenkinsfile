@@ -17,13 +17,13 @@ pipeline {
             agent {
                 docker {
                     image 'hashicorp/terraform'
-                    args '-v terraform/:/terraform --entrypoint=validate /terraform/main.tf'
+                    args '-v ${PWD}/terraform/:/terraform --entrypoint=sh'
                 }
             }
             steps {
                 echo "Hola Mundo"
                 // sh "terraform init"
-                // sh "terraform plan"
+                sh "terraform plan /terraform/"
                 // sh "terraform apply -auto-approve"
             }
         }
