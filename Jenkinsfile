@@ -14,8 +14,9 @@ pipeline {
         }
 
         stage('TF - Config'){
-            agent { 
-                docker 'hashicorp/terraform'
+            agent {
+                docker {
+                image 'hashicorp/terraform'
                 args '-v terraform/:/terraform --entrypoint=validate /terraform/main.tf'
             }
             steps {
