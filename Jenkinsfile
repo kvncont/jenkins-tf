@@ -17,7 +17,7 @@ pipeline {
             agent {
                 docker {
                     image 'hashicorp/terraform'
-                    args '-v ${PWD}/terraform/:/terraform --entrypoint=sh'
+                    args '-v ${PWD}/terraform:/terraform/ --entrypoint=sh'
                 }
             }
             steps {
