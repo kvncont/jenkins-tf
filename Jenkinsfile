@@ -1,29 +1,32 @@
 pipeline {
 
-    agent any
+    agent none
 
     stages {
 
         stage('AZ - Login') {
+            agent { docker 'microsoft/azure-cli:2.0.61' }
             steps {
-                withCredentials([azureServicePrincipal('azure-service-principal')]) {
+                withCredentials([azureServicePrincipal('AZURE_TERRAFORM_TEST')]) {
                     sh "az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID"
                 }
             }
         }
 
-        stage('TF - Plan'){
-            steps {
-                sh "terraform init"
-                sh "terraform plan"
-            }
-        }
+        // stage('TF - Plan'){
+        //     agent { docker 'hashicorp/terraform' }
+        //     steps {
+        //         sh "terraform init"
+        //         sh "terraform plan"
+        //     }
+        // }
 
-        stage('TF - Apply'){
-            steps {
-                sh "terraform apply -auto-approve"
-            }
-        }
+        // stage('TF - Apply'){
+        //     agent { docker 'hashicorp/terraform' }
+        //     steps {
+        //         sh "terraform apply -auto-approve"
+        //     }
+        // }
 
     }
 }
