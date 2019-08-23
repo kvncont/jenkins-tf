@@ -2,6 +2,13 @@ pipeline {
 
     agent none
 
+    environment {
+        ARM_CLIENT_ID = ''
+        ARM_CLIENT_SECRET = ''
+        ARM_SUBSCRIPTION_ID = ''
+        ARM_TENANT_ID = ''
+    }
+
     stages {
 
         stage('AZ - Login') {
@@ -21,8 +28,10 @@ pipeline {
                 }
             }
             steps {
-                sh "terraform -v"
-                sh "terraform plan terraform/"
+                dir('terraform') {
+                    sh "terraform -v"
+                    sh "terraform plan terraform/"
+                }
             }
         }
 

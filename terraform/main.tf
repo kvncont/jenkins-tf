@@ -1,7 +1,9 @@
-provider "azurerm" {}
+provider "azurerm" {
+    version = "~> 1.31"
+}
 
 resource "azurerm_resource_group" "resource_group" {
-    name     = "RG-${var.id}"
+    name     = "RG-${var.company}-${var.deparment}-${var.environment}-${var.product_service}-${var.region}"
     location = "${var.region}"
 }
 
