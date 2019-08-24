@@ -1,4 +1,27 @@
-# Config vars
+# Provider vars
+
+variable "subscription_id" {
+  description = "Subscription id service principal"
+  default = ""
+}
+
+variable "client_id" {
+  description = "Client id service principal"
+  default = ""
+}
+
+variable "client_secret" {
+  description = "Client secret service principal"
+  default = ""
+}
+
+variable "tenant_id" {
+  description = "Tenant id service principal"
+  default = ""
+}
+
+# Config vars 
+
 variable "company" {
     description = "Company name"
     default = "BAC"
