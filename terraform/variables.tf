@@ -23,8 +23,3 @@ variable "region" {
     description = "Region name"
     default = "eastus2"
 }
-
-# variable "id" {
-#     description = "Identificatoin name"
-#     default = "${var.company}-${var.deparment}-${var.environment}-${var.product_service}-${var.region}"
-# }

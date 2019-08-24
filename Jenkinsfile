@@ -1,46 +1,50 @@
 pipeline {
 
-    agent none
-
+    agent any
+    
     environment {
-        ARM_CLIENT_ID = ''
-        ARM_CLIENT_SECRET = ''
-        ARM_SUBSCRIPTION_ID = ''
-        ARM_TENANT_ID = ''
+        ARM_SUBSCRIPTION_ID = ""
+        ARM_CLIENT_ID = ""
+        ARM_CLIENT_SECRET = ""
+        ARM_TENANT_ID = ""
     }
 
     stages {
 
-        stage('AZ - Login') {
-            agent { docker 'microsoft/azure-cli:2.0.61' }
+        stage("AZ - Login SP") {
+            agent { docker "microsoft/azure-cli:2.0.61" }
             steps {
-                withCredentials([azureServicePrincipal('AZURE_TERRAFORM_TEST')]) {
-                    sh "az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID"
+                withCredentials([azureServicePrincipal(credentialsId: "AZURE_TERRAFORM_TEST",
+                                    subscriptionIdVariable: "SUBS_ID",
+                                    clientIdVariable: "CLIENT_ID",
+                                    clientSecretVariable: "CLIENT_SECRET",
+                                    tenantIdVariable: "TENANT_ID")]) {
+                    script {
+                        ARM_SUBSCRIPTION_ID = env.SUBS_ID
+                        ARM_CLIENT_ID = env.CLIENT_ID
+                        ARM_CLIENT_SECRET = env.CLIENT_SECRET
+                        ARM_TENANT_ID = env.TENANT_ID 
+                    }
+                    sh "az login --service-principal -u ${ARM_CLIENT_ID} -p ${ARM_CLIENT_SECRET} --tenant ${ARM_TENANT_ID}"
                 }
             }
         }
 
-        stage('TF - Config'){
+        stage("TF - Config"){
             agent {
                 docker {
-                    image 'hashicorp/terraform'
-                    args '--entrypoint="" -u root'
+                    image "adfinissygroup/terraform-azure:latest"
+                    args "--entrypoint='' -u root -e ARM_SUBSCRIPTION_ID=${ARM_SUBSCRIPTION_ID} -e ARM_CLIENT_ID=${ARM_CLIENT_ID} -e ARM_CLIENT_SECRET=${ARM_CLIENT_SECRET} -e ARM_TENANT_ID=${ARM_TENANT_ID}"
                 }
             }
             steps {
-                dir('terraform') {
-                    sh "terraform -v"
-                    sh "terraform plan terraform/"
+                dir("terraform"){
+                    sh "terraform init -no-color"
+                    sh "terraform validate -no-color"
+                    sh "terraform plan -no-color"
+                    sh "terraform apply -auto-approve -no-color"
                 }
             }
         }
-
-        // stage('TF - Apply'){
-        //     agent { docker 'hashicorp/terraform' }
-        //     steps {
-        //         sh "terraform apply -auto-approve"
-        //     }
-        // }
-
     }
 }
