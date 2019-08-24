@@ -19,23 +19,13 @@ pipeline {
                 } 
             }
             steps {
-                withCredentials([azureServicePrincipal(credentialsId: "AZURE_TERRAFORM_TEST",
-                                    subscriptionIdVariable: "SUBS_ID",
-                                    clientIdVariable: "CLIENT_ID",
-                                    clientSecretVariable: "CLIENT_SECRET",
-                                    tenantIdVariable: "TENANT_ID")]) {
-                    script {
-                        ARM_SUBSCRIPTION_ID = env.SUBS_ID
-                        ARM_CLIENT_ID = env.CLIENT_ID
-                        ARM_CLIENT_SECRET = env.CLIENT_SECRET
-                        ARM_TENANT_ID = env.TENANT_ID 
-                    }
-                    sh "az login --service-principal -u ${ARM_CLIENT_ID} -p ${ARM_CLIENT_SECRET} --tenant ${ARM_TENANT_ID}"
+                withCredentials([azureServicePrincipal('AZURE_TERRAFORM_TEST')]) {
+                    sh "az login --service-principal -u ${AZURE_CLIENT_ID} -p ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}"
                     dir("terraform"){
                         sh "terraform init -no-color"
                         sh "terraform validate -no-color"
-                        sh "terraform plan -no-color -var 'subscription_id=${ARM_SUBSCRIPTION_ID}' -var 'client_id=${ARM_CLIENT_ID}' -var 'client_secret=${ARM_CLIENT_SECRET}' -var 'tenant_id=${ARM_TENANT_ID}'"
-                        sh "terraform apply -auto-approve -no-color -var 'subscription_id=${ARM_SUBSCRIPTION_ID}' -var 'client_id=${ARM_CLIENT_ID}' -var 'client_secret=${ARM_CLIENT_SECRET}' -var 'tenant_id=${ARM_TENANT_ID}'"
+                        sh "terraform plan -no-color -var 'subscription_id=${AZURE_SUBSCRIPTION_ID}' -var 'client_id=${AZURE_CLIENT_ID}' -var 'client_secret=${AZURE_CLIENT_SECRET}' -var 'tenant_id=${AZURE_TENANT_ID}'"
+                        sh "terraform apply -auto-approve -no-color -var 'subscription_id=${AZURE_SUBSCRIPTION_ID}' -var 'client_id=${AZURE_CLIENT_ID}' -var 'client_secret=${AZURE_CLIENT_SECRET}' -var 'tenant_id=${AZURE_TENANT_ID}'"
                     }
                 }
             }
