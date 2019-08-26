@@ -25,9 +25,12 @@ pipeline {
                     sh "chmod +x scripts/tfstate_config.sh"
                     sh "source scripts/tfstate_config.sh"
 
+                    env.ARM_ACCESS_KEY = readFile 'access_key.txt'
+                    // sh "rm access_key.txt"
+                    sh "export ARM_ACCESS_KEY=${ARM_ACCESS_KEY}"
                     dir("terraform"){
                         sh "printenv"
-                        sh ''' 
+                        sh '''
                             terraform init -no-color \
                             -var "subscription_id=${AZURE_SUBSCRIPTION_ID}" \
                             -var "client_id=${AZURE_CLIENT_ID}" \

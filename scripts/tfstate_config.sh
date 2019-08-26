@@ -31,12 +31,12 @@ else
 fi
 
 # Get storage account key
-ACCOUNT_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query [0].value -o tsv)
+# ACCOUNT_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query [0].value -o tsv)
 
-export ARM_ACCESS_KEY=$ACCOUNT_KEY
+az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query [0].value -o tsv > access_key.txt
 
-echo "storage_account_name: $STORAGE_ACCOUNT_NAME"
-echo "container_name: $CONTAINER_NAME"
-echo "access_key: $ACCOUNT_KEY"
+# echo "storage_account_name: $STORAGE_ACCOUNT_NAME"
+# echo "container_name: $CONTAINER_NAME"
+# echo "access_key: $ACCOUNT_KEY"
 
-echo "arm_access_key: $ARM_ACCESS_KEY"
+# echo "arm_access_key: $ARM_ACCESS_KEY"
