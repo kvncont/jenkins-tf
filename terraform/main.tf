@@ -17,24 +17,6 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "resource_group" {
-    name     = "RG-${var.company}-${var.deparment}-${var.environment}-${var.product_service}-${var.region}"
+    name     = "RG-${var.company}-${var.deparment}-${var.environment}-${var.product_service}-${var.region_description}"
     location = "${var.region}"
 }
-
-# resource "azurerm_storage_account" "storage_account" {
-#   name                     = "SA-${var.company}-${var.deparment}-${var.environment}-${var.product_service}-${var.region}"
-#   resource_group_name      = "${azurerm_resource_group.resource_group.name}"
-#   location                 = "${var.region}"
-#   account_tier             = "Standard"
-#   account_replication_type = "LRS"
-
-#   tags = {
-#     environment = "${var.environment}"
-#   }
-# }
-
-# resource "azurerm_storage_container" "storage_container" {
-#   name                  = "SC-tfstate-${var.company}-${var.deparment}-${var.environment}-${var.product_service}-${var.region}"
-#   storage_account_name  = "${azurerm_storage_account.storage_account.name}"
-#   container_access_type = "private"
-# }

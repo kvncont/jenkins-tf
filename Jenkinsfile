@@ -1,7 +1,7 @@
 pipeline {
 
     agent any
-    
+
     environment {
         ARM_SUBSCRIPTION_ID = ""
         ARM_CLIENT_ID = ""
@@ -12,17 +12,17 @@ pipeline {
     stages {
 
         stage("TF - Build Infra") {
-            agent { 
+            agent {
                 docker {
                     image "adfinissygroup/terraform-azure"
                     args "--entrypoint='' -u root"
-                } 
+                }
             }
             steps {
                 withCredentials([azureServicePrincipal('AZURE_TERRAFORM_TEST')]) {
                     sh "az login --service-principal -u ${AZURE_CLIENT_ID} -p ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}"
-                    sh 'chmod +x scripts/initial_config.sh'
-                    sh 'source scripts/initial_config.sh'
+                    sh 'chmod +x scripts/tfstate_config.sh'
+                    sh 'source scripts/tfstate_config.sh'
 
                     dir("terraform"){
                         sh "terraform init -no-color"
