@@ -1,11 +1,11 @@
-# terraform {
-#   backend "azurerm" {
-#     resource_group_name  = "RG"
-#     storage_account_name = "SA"
-#     container_name       = "SC"
-#     key                  = "dev.terraform.tfstate"
-#   }
-# }
+terraform {
+  backend "azurerm" {
+    resource_group_name  = "RG_TFSTATE_EASTUS2"
+    storage_account_name = "tfstate13036"
+    container_name       = "tfstate"
+    key                  = "dev.terraform.tfstate"
+  }
+}
 
 provider "azurerm" {
     version = "~> 1.31"
