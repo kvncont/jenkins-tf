@@ -4,7 +4,7 @@ pipeline {
 
     stages {
 
-        stage("TF - Build Infra") {
+        stage("Terraform - Build Infrastructure") {
             agent {
                 docker {
                     image "adfinissygroup/terraform-azure"
@@ -13,9 +13,6 @@ pipeline {
             }
             steps {
                 withCredentials([azureServicePrincipal('AZURE_TERRAFORM_TEST'), azureStorage('TFSTATE')]) {
-                    // sh "az login --service-principal -u ${AZURE_CLIENT_ID} -p ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}"
-                    // sh "chmod +x scripts/tfstate_config.sh"
-                    // sh "source scripts/tfstate_config.sh"
                     dir("terraform"){
                         sh '''
                             terraform init -no-color \
@@ -32,8 +29,7 @@ pipeline {
                             -var "subscription_id=${AZURE_SUBSCRIPTION_ID}" \
                             -var "client_id=${AZURE_CLIENT_ID}" \
                             -var "client_secret=${AZURE_CLIENT_SECRET}" \
-                            -var "tenant_id=${AZURE_TENANT_ID}" \
-                            -backend-config "access_key=${AZURE_STORAGE_ACCOUNT_KEY}"
+                            -var "tenant_id=${AZURE_TENANT_ID}"
                         '''
 
                         sh '''
@@ -41,8 +37,7 @@ pipeline {
                             -var "subscription_id=${AZURE_SUBSCRIPTION_ID}" \
                             -var "client_id=${AZURE_CLIENT_ID}" \
                             -var "client_secret=${AZURE_CLIENT_SECRET}" \
-                            -var "tenant_id=${AZURE_TENANT_ID}" \
-                            -backend-config "access_key=${AZURE_STORAGE_ACCOUNT_KEY}"
+                            -var "tenant_id=${AZURE_TENANT_ID}"
                         '''
                     }
                 }
