@@ -23,11 +23,11 @@ pipeline {
                     script {
                         env.ARM_ACCESS_KEY = readFile 'access_key.txt'
                     }
-                    //echo "${ARM_ACCESS_KEY}"
+                    echo env.ARM_ACCESS_KEY
                     // sh "rm access_key.txt"
                     //sh "export ARM_ACCESS_KEY=${ARM_ACCESS_KEY}"
                     dir("terraform"){
-                        sh "printenv"
+                        sh "printenv | sort"
                         sh '''
                             terraform init -no-color \
                             -var "subscription_id=${AZURE_SUBSCRIPTION_ID}" \
