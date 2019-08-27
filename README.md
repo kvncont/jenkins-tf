@@ -1,2 +1,2 @@
 # tf-jenkins
-Proyecto de prueba de Jenkins y Terraform
+Creación de recursos en azure con terraform usando Jenkins
