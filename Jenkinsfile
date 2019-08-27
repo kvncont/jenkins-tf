@@ -6,10 +6,7 @@ pipeline {
 
         stage("Terraform - Build Infrastructure") {
             agent {
-                docker {
-                    image "adfinissygroup/terraform-azure"
-                    args "--entrypoint='' -u root"
-                }
+                docker { image 'azuresdk/azure-cli-python:latest' }
             }
             steps {
                 withCredentials([azureServicePrincipal('AZURE_TERRAFORM_TEST'), azureStorage('TFSTATE')]) {
