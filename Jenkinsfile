@@ -3,10 +3,6 @@ pipeline {
     agent any
 
     environment {
-        // ARM_SUBSCRIPTION_ID = ""
-        // ARM_CLIENT_ID = ""
-        // ARM_CLIENT_SECRET = ""
-        // ARM_TENANT_ID = ""
         ARM_ACCESS_KEY = ""
     }
 
@@ -27,13 +23,12 @@ pipeline {
                     script {
                         env.ARM_ACCESS_KEY = readFile 'access_key.txt'
                     }
-                    echo "${ARM_ACCESS_KEY}"
+                    //echo "${ARM_ACCESS_KEY}"
                     // sh "rm access_key.txt"
-                    sh "export ARM_ACCESS_KEY=${ARM_ACCESS_KEY}"
+                    //sh "export ARM_ACCESS_KEY=${ARM_ACCESS_KEY}"
                     dir("terraform"){
                         sh "printenv"
                         sh '''
-                            export ARM_ACCESS_KEY=${ARM_ACCESS_KEY}
                             terraform init -no-color \
                             -var "subscription_id=${AZURE_SUBSCRIPTION_ID}" \
                             -var "client_id=${AZURE_CLIENT_ID}" \
