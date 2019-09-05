@@ -9,6 +9,7 @@ pipeline {
                 docker {
                     image "adfinissygroup/terraform-azure"
                     args "--entrypoint='' -u root"
+                    reuseNode true
                 }
             }
             steps {
