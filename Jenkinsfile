@@ -23,6 +23,7 @@ pipeline {
                             -var "tenant_id=${AZURE_TENANT_ID}" \
                             -backend-config "access_key=${AZURE_STORAGE_ACCOUNT_KEY}"
                         '''
+                        
                         sh "terraform validate -no-color"
 
                         sh '''
